@@ -578,10 +578,7 @@ Simulator for Andriod --> Android Studio
 Simulator for iOS --> Xcode
 The good thing about expo is that you don't need to install and configure the simulators to run the app. It still gives you the option to run expo on the simulator, but you have to install and configure the simulator by yourself.
 Install Expo app in your phone.
-But with VPN connection the connection causes problem so run the below for Expo web
-expo init app-name-directory
-cd app-name-directory
-npm start
+But with VPN connection it causes problem so run the below for Expo web after #Setup step
 npm install @react-navigation/native
 npx expo install react-native-web@~0.18.7 react-dom@18.0.0 @expo/webpack-config@^0.17.0
 install "react-dom": "^18.2.0" as well
@@ -592,28 +589,51 @@ Open Terminal
 mkdir lowes-native
 cd lowes-native
 Inside lowes-native --> npm i -g expo-cli
-Inside lowes-native, type "expo init my-pro"
+Inside lowes-native, type "expo init my-pro", then choose "blank" template
 cd my-pro
 Inside my-pro, type "npm start"
 Scan the code in your mobile Expo app
 package.json will be having all the dependencies for the app
 
-We cannot use HTML tags like <h1>,<p>,<div> in React Native
+# Open package.json and understand the concepts
+It has all the nnecessary dependencies to run in the environment
+{
+  "name": "my-pro",
+  "version": "1.0.0",
+  "main": "node_modules/expo/AppEntry.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "expo": "~46.0.9",
+    "expo-status-bar": "~1.4.0",
+    "react": "18.0.0",
+    "react-native": "0.69.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9"
+  },
+  "private": true
+}
+
+# We cannot use HTML tags like <h1>,<p>,<div> in React Native
 Wrong: <div>welcome</div>
 Wrong: <div><Text>Welcome</Text></div>
 Wrong: <Text><div>Welcome</div></Text>
 Right: <Text>Welcome</Text>
 
-Core components in React Native
+# Core components in React Native
 View
 Text
 Button
 TextInput
 Image
 
-Tags in diferrent platform
+# Tags in diferrent platform
 <-- Web Browser -->
-
 <div>
 <input>
 <-- Android -->
@@ -626,108 +646,211 @@ UiTextField
 View
 TextInput
 
-First React native program
+# First React native program
 In App.js
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import Welcome from './components/Welcome';
 export default function App() {
-return (
-<View style={styles.container}>
-<Text>Sri Krishna</Text>
-<Text>Open up App.js to start working on your app!</Text>
-<Welcome name="Sri Krishna"/>
-</View>
-);
+  return (
+    <View style={styles.container}> // called as container styling
+      <Text>Sri Krishna</Text>
+      <StatusBar style="auto" />
+      <Welcome/>
+    </View>
+  );
 }
+const styles = StyleSheet.create({ // default styling in react-native
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 In Welcome.js
-import { View, Text, Button } from "react-native";
-export default function Welcome(props){
-return(
-<View>
-<Text>Welcome {props.name}</Text>
-<Button title='tap-me'/>
-</View>
-)
+import { Button, Text, View } from "react-native";
+export default function Welcome(){
+    return(
+        <View>
+            <Text>Welcome</Text>
+            <Button title="tap-me"/>
+        </View>
+    )
 }
 
+# Importing diferrent components(function and class)
 If "export default function NestedView(){"
 then import as "import NestedView from './components/NestedView';"
 If "export class PassToggle extends Component{"
 then import as "import { PassToggle } from './components/PassToggle';"
 
-NestedView.js
-export default function NestedView(){
-return(
-<View style={styles.container}>
-<View style={{backgroundColor:'blue', flex:0.3}}/> // overriding default style
-<View style={{backgroundColor:'red', flex:0.5}}/>
-<Text style={styles.textdemo}>Nested View Demo</Text>
-<View style={{alignItems: 'center'}}> // inline styles
-<Welcome name='admin'/>
-<Welcome name='Manager'/>
-</View>
-</View>
-)
+# NestedView.js
+import { StyleSheet, Text, View } from "react-native";
+export default function NestedView() {
+  return (
+    <View style={styles.container}>
+      <View style={{ backgroundColor: "blue", flex: 0.3 }} />{/* inline style */}
+      <View style={{ backgroundColor: "red", flex: 0.5 }} />
+      <Text style={styles.textdemo}>Nested View Demo</Text>
+    </View>
+  );
 }
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-flexDirection: 'row',
-height: 100,
-width: '80%',
-backgroundColor: 'pink',
-},
-textdemo:{
-fontSize:18
-}
+  container: {
+    flex: 1, //how much space it will take in the row, 1 means entire row
+    flexDirection: "row",
+    height: 100,
+    width: "80%",
+    backgroundColor: "pink",
+  },
+  textdemo: {
+    fontSize: 18,
+  },
 });
 
-PassToggle.js
-export class PassToggle extends Component {
-state = {
-password: "",
-isPassVisible: true,
-toggleText: "Show",
-};
-handleHide = () => {
-const { isPassVisible } = this.state;
-if (isPassVisible) {
-this.setState({ isPassVisible: false });
-this.setState({ toggleText: "Hide" });
-} else {
-this.setState({ isPassVisible: true });
-this.setState({ toggleText: "Show" });
+# Passing props in React Native
+NestedView.js
+import { StyleSheet, Text, View } from "react-native";
+import Welcome from "./Welcome";
+export default function NestedView() {
+  return (
+    <View style={styles.container}>
+      <View style={{ backgroundColor: "blue", flex: 0.3 }} />
+      <View style={{ backgroundColor: "red", flex: 0.5 }} />
+      <Text style={styles.textdemo}>Nested View Demo</Text>
+      <View style={{ alignItems: "center" }}>
+        <Welcome name="Admin" />
+        <Welcome name="Manager" />
+      </View>
+    </View>
+  );
 }
-};
-render() {
-return (
-<View style={styles.container}>
-<TextInput
+Welcome.js
+import { Button, Text, View } from "react-native";
+export default function Welcome(props) {
+  return (
+    <View>
+      <Text>Welcome {props.name}</Text>
+    </View>
+  );
+}
+
+# Handling the toggle buttons
+import { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+export default class PassToggle extends Component {
+  state = {
+    password: "",
+    isPassVisible: true,
+    toggleText: "Show",
+  };
+  handleHide = () => {
+    const ipv = this.state.isPassVisible;
+    if (ipv) {
+      this.setState({ isPassVisible: false });
+      this.setState({ toggleText: "Hide" });
+    } else {
+      this.setState({ isPassVisible: true });
+      this.setState({ toggleText: "Show" });
+    }
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <TextInput
           secureTextEntry={this.state.isPassVisible}
           style={styles.textStyle}
         />
-<TouchableOpacity onPress={this.handleHide}>
-<Text style={{ fontSize: 20 }}>{this.state.toggleText}</Text>
-</TouchableOpacity>
-</View>
-);
-}
+        <TouchableOpacity onPress={this.handleHide}>
+          <Text style={{ fontSize: 20 }}>{this.state.toggleText}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#fff",
-alignItems: "center",
-justifyContent: "center",
-},
-textStyle: {
-width: 400,
-height: 50,
-backgroundColor: "lightblue",
-color: "white",
-fontSize: 20,
-},
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textStyle: {
+    width: 400,
+    height: 50,
+    backgroundColor: "lightblue",
+    color: "white",
+    fontSize: 20,
+  },
 });
 
-ButtonDemo.js
+# JSX expressions must have one parent element. The below code is wrong
+  return (
+    <View style={styles.container}>
+      <Button onPress={alertMe} title="click it" />
+    </View>
+    <View style={styles.container}>
+      <Button onPress={alertMe} title="click it" />
+  </View>
+  );
+
+# Button demo and disabling the button
+import { Alert, Button, StyleSheet, View } from "react-native";
+export default function ButtonDemo() {
+  const alertMe = () => {
+    //Alert.alert("") works only on app and not on browser. alert("") works both on browser and app
+    Alert.alert("button clicked");
+  };
+  return (
+    <View style={styles.container}>
+      <Button style={styles.btnContainer} onPress={alertMe} title="click it" />
+      <View style={styles.container}>
+        <Button
+          style={styles.btnContainer}
+          onPress={alertMe}
+          title="click it"
+          color="pink"
+        />
+      </View>
+      <View style={styles.container}>
+        <Button
+          style={styles.btnContainer}
+          onPress={alertMe}
+          title="click it"
+          color="blue"
+          disabled={true}
+        />
+      </View>
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnContainer: {
+    margin: 20,
+  },
+});
+
+
+# Properties of flexbox
+flexbox is an algorithm to specify the layout component of the children. It is an important property of css and it is designed for alignment purpose. The propertie of flebox are:
+flexDrection: column, row
+justifyContent: center, flex-start, flex-end, space-around, space-between
+alignItems: center and other areas
+
+
 export default class ButtonDemo extends Component {
 state = {
 initName: "",
@@ -783,6 +906,7 @@ btnstyle: {
 width: "30%",
 },
 });
+
 
 Linking
 It is basically equal to <a> and <href>. It is used to open an URL.
