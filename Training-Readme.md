@@ -800,6 +800,17 @@ const styles = StyleSheet.create({
       <Button onPress={alertMe} title="click it" />
   </View>
   );
+  but this is right
+  return (
+    <View>
+      <View style={styles.container}>
+        <Button onPress={alertMe} title="click it" />
+      </View>
+      <View style={styles.container}>
+        <Button onPress={alertMe} title="click it" />
+      </View>
+    </View>
+  );
 
 # Button demo and disabling the button
 import { Alert, Button, StyleSheet, View } from "react-native";
@@ -843,314 +854,373 @@ const styles = StyleSheet.create({
   },
 });
 
+# Open a URL with Linking.openURL
+<a href="URL link"></a> --> will open the URL in browser
+Linking.openURL --> it is running in an expo shell which is acting as an app simulator, so it is designed to open in app only always
+import { Alert, Button, Linking, StyleSheet, View } from "react-native";
+export default function ButtonDemo() {
+  const alertMe = () => {
+    //Alert.alert("") works only on app and not on browser. alert("") works both on browser and app
+    Alert.alert("button clicked");
+  };
+  return (
+    <View style={styles.container}>
+      <Button style={styles.btnContainer} onPress={alertMe} title="click it" />
+
+      <View style={styles.container}>
+        <Button
+          style={styles.btnContainer}
+          onPress={() =>
+            Linking.openURL("https://www.youtube.com/watch?v=D4qAQYlgZQs")
+          }
+          title="open youtube"
+          color="pink"
+        />
+      </View>
+      <View style={styles.container}>
+        <Button
+          style={styles.btnContainer}
+          onPress={alertMe}
+          title="click it"
+          color="blue"
+          disabled={true}
+        />
+      </View>
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnContainer: {
+    margin: 20,
+  },
+});
 
 # Properties of flexbox
 flexbox is an algorithm to specify the layout component of the children. It is an important property of css and it is designed for alignment purpose. The propertie of flebox are:
 flexDrection: column, row
 justifyContent: center, flex-start, flex-end, space-around, space-between
-alignItems: center and other areas
+alignItems: stretch, center and other areas
+flexDirection: "column", is column by default
 
-
-export default class ButtonDemo extends Component {
-state = {
-initName: "",
-data: [],
-};
-inputHandler = (val) => {
-this.setState({
-initName: val,
+In Layout.js
+import { StyleSheet, View } from "react-native";
+export default function Layout() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.con1} />
+      <View style={styles.con2} />
+      <View style={styles.con3} />
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "stretch", // means even if for any container like con3 we comment width, it will still stretch to match green
+  },
+  con1: {
+    height: 60,
+    width: 60,
+    backgroundColor: "blue",
+  },
+  con2: {
+    height: 60,
+    width: 60,
+    backgroundColor: "green",
+  },
+  con3: {
+    height: 60,
+    // width: 60,
+    backgroundColor: "pink",
+  },
 });
-};
-butnHandler = () => {
-alert("clicked");
-};
-render() {
-return (
-<View style={styles.container}>
-<View style={styles.innerData}>
-<TextInput
+
+In Alignment.js
+import { Component } from "react";
+import { Alert, Button, StyleSheet, TextInput, View } from "react-native";
+export default class Alignment extends Component {
+  state = {
+    initVal: "",
+    data: [],
+  };
+  inputHandler = (val) => {
+    this.setState({
+      initVal: val,
+    });
+  };
+  btnHandler = () => {
+    Alert.alert("button clicked");
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.innerData}>
+          <TextInput
             placeholder="enter name"
             onChangeText={this.inputHandler}
             style={styles.textStyle}
           />
-<Button
+          <Button
             title="Add User"
-            onPress={this.butnHandler}
-            style={styles.btnstyle}
-          ></Button>
-</View>
-</View>
-);
-}
+            onPress={this.btnHandler}
+            style={styles.btnStyle}
+          />
+        </View>
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#fff",
-padding: 26,
-
+  container: {
+    flex: 1,
+    padding: 26,
+    backgroundColor: "#fff",
     justifyContent: "flex-start",
-
-},
-innerData: {
-width: "100%",
-flexDirection: "row",
-justifyContent: "space-between",
-alignItems: "center",
-},
-textStyle: {
-width: "70%",
-backgroundColor: "gray",
-},
-btnstyle: {
-width: "30%",
-},
+  },
+  innerData: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textStyle: {
+    width: "70%",
+    backgroundColor: "gray",
+  },
+  btnStyle: {
+    width: "30%",
+  },
 });
 
 
-Linking
-It is basically equal to <a> and <href>. It is used to open an URL.
-<Button
-title="open youtube"
-onPress={() => Linking.openURL("https://www.youtube.com/")}
-style={styles.btnstyle}>
-</Button>
 
-Layout.js with flexDirection: "row" and flexDirection: "column"
-export default function Layout() {
-return (
-<View style={styles.container}>
-<View style={styles.con1} />
-<View style={styles.con2} />
-<View style={styles.con3} />
-</View>
-);
-}
-const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#fff",
-// flexDirection: "row",
-flexDirection: "column",
-justifyContent: "center",
-alignItems: "stretch",
-},
-con1: {
-width: 60,
-height: 60,
-backgroundColor: "blue",
-},
-con2: {
-width: 60,
-height: 60,
-backgroundColor: "green",
-},
-con3: {
-// width: 60,
-height: 60,
-backgroundColor: "yellow",
-},
-});
-
-ScrollDemo.js for scrolling horizontal and vertical
+# Srcolling using ScrollView for scrolling horizontal and vertical
+ScrollView is by default vertical
+showsVerticalScrollIndicator={false} will allow scrolling but the scrollbar indicator will not be there
+We can make sure app is not overflooded with data by using the let screenWidth = Dimensions.get("window").width;
+Dimensions will tell about screen rotations
+import { Component } from "react";
 import {
-View,
-Text,
-Button,
-StyleSheet,
-ScrollView,
-Dimensions,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { Component } from "react";
-import { Image } from "react-native-elements";
 export default class ScrollDemo extends Component {
-state = {
-userData: [
-{ uname: "admin1", email: "admin@mail.com" },
-{ uname: "admin2", email: "admin@mail.com" },
-{ uname: "admin3", email: "admin@mail.com" },
-{ uname: "admin4", email: "admin@mail.com" },
-{ uname: "admin5", email: "admin@mail.com" },
-{ uname: "admin6", email: "admin@mail.com" },
-{ uname: "admin7", email: "admin@mail.com" },
-{ uname: "admin8", email: "admin@mail.com" },
-{ uname: "admin9", email: "admin@mail.com" },
-{ uname: "admin10", email: "admin@mail.com" },
-],
-};
-render() {
-let sw = Dimensions.get("window").width;
-return (
-<View>
-<ScrollView showsVerticalScrollIndicator={false} horizontal={true}>
-<Image
-source={require("../images/Krishna.jpeg")}
-style={[styles.image, { width: sw }]} // inline style
-/>
-<Text style={styles.welcome}>Hare Krishna</Text>
-</ScrollView>
-<ScrollView
-          horizontal={true}
-          vertical={true}
-          showsVerticalScrollIndicator={false}
-        >
-{this.state.userData.map((name, index) => (
-<View key={name.uname} style={styles.container}>
-<Text>{name.uname}</Text>
-</View>
-))}
-</ScrollView>
-</View>
-);
-}
-}
-const styles = StyleSheet.create({
-// container: {
-// flex: 1,
-// padding: 30,
-// margin: 2,
-// borderColor: "red",
-// borderWidth: 1,
-// backgroundColor: "#fff",
-// flexDirection: "row",
-// alignItems: "center",
-// justifyContent: "space-between",
-// },
-container: {
-marginTop: 50,
-paddingVertical: 20,
-backgroundColor: "white",
-},
-welcome: {
-flex: 1,
-margin: 20,
-backgroundColor: 20,
-textAlign: "center",
-fontSize: 20,
-paddingTop: 70,
-},
-});
-
-ListView and FlatList(helps in lazy loading of too many datas)
-import { Component } from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-export class ListViewDemo extends Component {
-renderData = () => {
-return (
-<View
-style={{ height: 1, width: "100%", backgroundColor: "lightpink" }} ></View>
-);
-};
-render() {
-return (
-<View style={styles.container}>
-<FlatList
-data={[
-{ uname: "Admin" },
-{ uname: "Manager" },
-{ uname: "QA" },
-{ uname: "CA" },
-{ uname: "Tester" },
-]}
-renderItem={({ item }) => (
-<Text style={styles.item}>{item.uname}</Text>
-)}
-itemSepratorComponent={this.renderData}
-/>
-</View>
-);
-}
+  state = {
+    names: [
+      { uname: "admin", email: "admin@gmail.com" },
+      { uname: "admin1", email: "admin@gmail.com" },
+      { uname: "admin2", email: "admin@gmail.com" },
+      { uname: "admin3", email: "admin@gmail.com" },
+      { uname: "admin4", email: "admin@gmail.com" },
+      { uname: "admin5", email: "admin@gmail.com" },
+      { uname: "admin6", email: "admin@gmail.com" },
+      { uname: "admin7", email: "admin@gmail.com" },
+      { uname: "admin8", email: "admin@gmail.com" },
+      { uname: "admin9", email: "admin@gmail.com" },
+      { uname: "admin10", email: "admin@gmail.com" },
+      { uname: "admin11", email: "admin@gmail.com" },
+    ],
+  };
+  render() {
+    let sw = Dimensions.get("window").width;
+    return (
+      <View>
+        <ScrollView showsVerticalScrollIndicator={false} horizontal={false}>
+          <Image
+            source={require("../images/nature.jpg")}
+            style={[styles.image, { width: sw }]}
+          />
+          <Image
+            source={require("../images/nature2.jpg")}
+            style={[styles.image, { width: sw }]}
+          />
+          <Text style={styles.welcome}>Nature Image</Text>
+        </ScrollView>
+        {/* <ScrollView showsVerticalScrollIndicator={false}>
+          {this.state.names.map((data) => (
+            <View key={data.uname} style={styles.container}>
+              <Text>{data.uname}</Text>
+            </View>
+          ))}
+        </ScrollView> */}
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#fff",
-alignItems: "center",
-justifyContent: "center",
-// marginTop: "50",
-},
-item: {
-padding: 10,
-fontSize: 18,
-height: 44,
-},  
+  //   container: {
+  //     flex: 1,
+  //     padding: 30,
+  //     margin: 2,
+  //     borderColor: "red",
+  //     borderWidth: 1,
+  //     flexDirection: "row",
+  //     backgroundColor: "#fff",
+  //     alignItems: "center",
+  //     justifyContent: "space-between",
+  //   },
+  container: {
+    marginTop: 50,
+    paddingVertical: 20,
+    backgroundColor: "white",
+  },
+  welcome: {
+    flex: 1,
+    margin: 20,
+    backgroundColor: "red",
+    textAlign: "center",
+    fontSize: 20,
+    paddingTop: 70,
+  },
 });
 
-ListView and FlatList from DB
-"json-server" is used for backend api call
+# FlatList
+ListView is a componenet to display the list ot items in a vertical scrollbar list but it is  deprecated
+FlatList is same as ListView and is used now
+Components of FlatList
+data: it represents the source of data. It is like a plain array
+renderItem: it is used for renderng and iterating the data. Takes an item from data and renders it into the list.
+import { Component } from "react";Component
+import { FlatList, StyleSheet, Text, View } from "react-native";
+export default class FlatListDemo extends  {
+  renderData = () => {
+    return (
+      <View
+        style={{ height: 1, width: "100%", backgroundColor: "lightpink" }}
+      ></View>
+    );
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={[
+            { uname: "Admin" },
+            { uname: "Manager" },
+            { uname: "QA" },
+            { uname: "CA" },
+            { uname: "Tester" },
+          ]}
+          renderItem={({ item }) => (
+            <Text style={styles.item}>{item.uname}</Text>
+          )}
+          itemSepratorComponent={this.renderData}
+        />
+      </View>
+    );
+  }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+});
+
+# FlatList from DB
+"json-server" is used for backend api call like a db server
+Setup Steps
 npm i json-server --force
 sudo npm install -g json-server
-npx json-server --watch data/db.json --port 5200
+Create a folder named "data" and copy the "db.json" inside it
+To launch the "db.json" use the below command
 json-server --watch data/db.json --port 5200
+or
+npx json-server --watch data/db.json --port 5200
+
 In FetchData.js
 const URI = "http://localhost:5200";
 export default {
-async fetchUsers() {
-try {
-let response = await fetch(URI + '/users');
-let resp = await response.json();
-return resp;
-} catch (e) {
-console.log(e);
-}
-},
+  async fetchUsers() {
+    try {
+      let response = await fetch(URI + "/users"); // fetch() easily communicate with backend data
+      let resp = await response.json();
+      return resp;
+    } catch (e) {
+      console.log(e);
+    }
+  },
 };
+If localhost doesnot work in mobile, use the below URL for FetchData.js
+const URI = "https://jsonplaceholder.typicode.com";
+https://jsonplaceholder.typicode.com/ --> JSONPlaceholder is an online REST service that you can use whenever you need some fake data. Run this code in a console or from anywhere that CORS and JSONP is supported.
+
 In ListViewDemoDB.js
-import { Component, Vi } from "react";
+import { Component } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import ajaxdata from "../shared/FetchData";
-import { View, Text, StyleSheet, FlatList } from "react-native";
-export default class ListViewDemoDB extends Component {
-state = {
-users: [],
-};
-async componentDidMount() {
-const users = await ajaxdata.fetchUsers();
-this.setState({ users });
-}
-render() {
-return (
-<View style={styles.container}>
-<Text style={styles.h2text}>User Details</Text>
-<FlatList
-data={this.state.users}
-showsHorizontalScrollIndicator={false}
-renderItem={({ item }) => (
-<View style={styles.flatView}>
-<Text style={styles.name}>{item.name}</Text>
-<Text style={styles.email}>{item.email}</Text>
-</View>
-)}
-keyExtractor={(item) => item.email} // for uniqueness of id
-/>
-</View>
-);
-}
+export default class FlatListDBDemo extends Component {
+  state = {
+    users: [],
+  };
+  async componentDidMount() {
+    const users = await ajaxdata.fetchUsers();
+    this.setState({ users });
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.h2text}>User Details</Text>
+        <FlatList
+          data={this.state.users}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <View style={styles.flatView}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.email}>{item.email}</Text>
+            </View>
+          )}
+          keyExtractor={(item) => item.email}
+        />
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "#fff",
-alignItems: "center",
-justifyContent: "center",
-marginTop: "50",
-},
-h2text: {
-marginTop: 10,
-fontSize: 40,
-fontWeight: "bold",
-},
-flatView: {
-justifyContent: "center",
-paddingTop: 30,
-borderRadius: 2,
-},
-name: {
-fontFamily: "Verdana",
-fontSize: 18,
-},
-email: {
-color: "blue",
-},
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 50,
+  },
+  h2text: {
+    marginTop: 50,
+    fontSize: 40,
+    fontWeight: "bold",
+  },
+  flatView: {
+    justifyContent: "center",
+    borderRadius: 2,
+    paddingTop: 30,
+  },
+  name: {
+    fontFamily: "Verdana",
+    fontSize: 18,
+  },
+  email: {
+    color: "blue",
+  },
 });
 
 SectionListDemo.js
