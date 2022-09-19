@@ -1223,174 +1223,173 @@ const styles = StyleSheet.create({
   },
 });
 
-SectionListDemo.js
-Similar to flatlist with sections.
+# SectionList is similar to flatlist with sections
 Like "city" have many sections(Bangalore, Pune, Hyderabad) and each section have many users, so a sectionList is needed.
-import { View, SectionList, StyleSheet, Text } from "react-native";
 import { Component } from "react";
+import { SectionList, StyleSheet, Text, View } from "react-native";
 export default class SectionListDemo extends Component {
-getData = (item) => {
-alert(item);
-};
-render() {
-return (
-<View style={styles.container}>
-<SectionList
-sections={[
-{ title: "pune", data: ["admin", "manager", "qa"] },
-{ title: "mumbai", data: ["a", "b", "c"] },
-{ title: "hyderabad", data: ["d", "e", "f"] },
-]}
-renderItem={({ item }) => ( // to iterate data we use "renderItem", it by default search for "data" attributes, it is the default property
-<Text style={styles.item} onPress={this.getData.bind(this, item)}>
-{item}
-</Text>
-)}
-renderSectionHeader={({ section }) => (// to iterate data and place in header we use "renderSectionHeader"
-<Text style={styles.sectionHeader}>{section.title}</Text>
-)}
-keyExtractor={(item, index) => index} // used to maintain the index
-/>
-</View>
-);
-}
+  getData = (item) => {
+    alert(item);
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <SectionList
+          sections={[
+            { title: "pune", data: ["admin", "manager", "qa"] }, // "data" is the default property, any other field like "data1", "data2" will not work
+            { title: "bangaore", data: ["a1", "m1", "qa1"] },
+            { title: "kolkata", data: ["a2", "m2", "qa2"] },
+            { title: "trivandrum", data: ["a3", "m3", "qa3"] },
+          ]}
+          renderItem={({ item }) => (
+            <Text style={styles.item} onPress={this.getData.bind(this, item)}>
+              {item} //{item} will only take default "data" field
+            </Text>
+          )}
+          renderSectionHeader={({ section }) => (
+            <Text style={styles.sectionHeader}>{section.title}</Text>
+          )}
+          keyExtractor={(item, index) => index}
+        />
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "white",
-},
-sectionHeader: {
-padding: 2,
-paddingLeft: 10,
-paddingRight: 10,
-paddingBottom: 2,
-fontSize: 23,
-fontWeight: "bold",
-backgroundColor: "lightpink",
-},
-item: {
-padding: 10,
-fontSize: 18,
-height: 44,
-},
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  sectionHeader: {
+    padding: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 23,
+    fontWeight: "bold",
+    backgroundColor: "lightpink",
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 });
 
-Another SetcionListDemoData.js with <Icon name="ios-eye" type="ionicon">
-import { View, Text, StyleSheet, SectionList } from "react-native";
+# SetcionList with data from DB
+For <Icon name="ios-eye" type="ionicon"> to work we need to install "npm i react-native-elements"
+import { Component } from "react";
+import { SectionList, StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
-import { Component } from "react";
 export default class SectionListDemoData extends Component {
-state = {
-data: [
-{
-title: "Operating System",
-data: [
-"Processes & Threads",
-"Memory Management",
-"CPU Scheduling",
-"Process Synchronization",
-"Deadlock",
-],
-},
-{
-title: "Computer Network",
-data: [
-"Data Link Layer",
-"Network Layer",
-"Transport Layer",
-"Application Layer",
-"Network Security",
-],
-},
-{
-title: "DBMS",
-data: [
-"Entity Relationship Model",
-"Normalisation",
-"Transaction and Concurrency Control",
-"Indexing, B and B+ trees",
-"File Organization",
-],
-},
-],
-};
-render() {
-return (
-<View style={styles.container}>
-<SectionList
-sections={this.state.data}
-keyExtractor={(item, index) => item + index}
-renderItem={({ item }) => (
-<View style={styles.row}>
-<Text style={styles.rowText}>{item}</Text>
-<Icon name="ios-eye" type="ionicon" color="blue" />
-</View>
-)}
-renderSectionHeader={({ section: { title } }) => (
-<Text style={styles.header}>{title}</Text>
-)}
-/>
-</View>
-);
+  state = {
+    data: [
+      {
+        title: "Operating System",
+        data: [
+          "Processes & Threads",
+          "Memory Management",
+          "CPU Scheduling",
+          "Process Synchronization",
+          "Deadlock",
+        ],
+      },
+      {
+        title: "Computer Network",
+        data: [
+          "Data Link Layer",
+          "Network Layer",
+          "Transport Layer",
+          "Application Layer",
+          "Network Security",
+        ],
+      },
+      {
+        title: "DBMS",
+        data: [
+          "Entity Relationship Model",
+          "Normalisation",
+          "Transaction and Concurrency Control",
+          "Indexing, B and B+ trees",
+          "File Organization",
+        ],
+      },
+    ],
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <SectionList
+          sections={this.state.data}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => (
+            <View style={styles.row}>
+              <Text style={styles.rowText}>{item}</Text>
+              <Icon name="ios-eye" type="ionicon" color="red" />
+            </View>
+          )}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.header}>{title}</Text>
+          )}
+        />
+      </View>
+    );
+  }
 }
-}
-
 const styles = StyleSheet.create({
-container: {
-flex: 1,
-backgroundColor: "white",
-marginTop: 18,
-},
-screen: {
-marginTop: 18,
-},
-header: {
-padding: 2,
-marginTop: 10,
-padding: 2,
-backgroundColor: "lightblue",
-textAlign: "center",
-},
-row: {
-marginHorizontal: 15,
-marginTop: 10,
-flexDirection: "row",
-justifyContent: "space-between",
-alignItems: "center",
-paddingHorizontal: 2,
-},
-rowText: {
-fontSize: 18,
-},
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    marginTop: 18,
+  },
+  screen: {
+    marginTop: 18,
+  },
+  header: {
+    padding: 2,
+    marginTop: 10,
+    backgroundColor: "lightblue",
+    textAlign: "center",
+  },
+  row: {
+    marginHorizontal: 15,
+    marginTop: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 2,
+  },
+  rowText: {
+    fontSize: 18,
+  },
 });
 
-ModalDemo
-The React Native Modal is a type of View component which is used to present the content above an enclosing view. There are three different types of options (slide, fade and none) available in a modal that decides how the modal will show inside the react native app.
+
+# Modal : The React Native Modal is a type of View component which is used to present the content above an enclosing view. There are three different types of options (slide, fade and none) available in a modal that decides how the modal will show inside the react native app. It is a builtin component.
 In ModalDemo.js
-import { View, StyleSheet, Button, Alert } from "react-native";
+import { View, StyleSheet, Button } from "react-native";
 import { Component } from "react";
+import myimage from "../images/nature2.jpg";
 import DisplayModal from "./DisplayModal";
-import myimage from "../images/Krishna.jpeg";
 export default class ModalDemo extends Component {
-state = {
-display: false,
-};
-loadModal() {
-this.setState((prevState) => {
-return {
-display: true,
-};
-});
-}
-render() {
-return (
-<View style={styles.container}>
-<Button
-onPress={() => this.loadModal()}
-title="modal demo"
-color="red" ></Button>
-
+  state = {
+    display: false,
+  };
+  loadModal = () => {
+    this.setState((prevState) => {
+      return {
+        display: true,
+      };
+    });
+  };
+  render() {
+    return (
+      <View style={styles.container}>
+        <Button
+          onPress={() => this.loadModal()}
+          title="modal-demo"
+          color="red"
+        ></Button>
         <DisplayModal
           image={myimage}
           data="profile"
@@ -1398,255 +1397,260 @@ color="red" ></Button>
         />
       </View>
     );
-
-}
+  }
 }
 const styles = StyleSheet.create({
-container: {
-marginTop: 50,
-paddingVertical: 20,
-backgroundColor: "white",
-},
+  container: {
+    marginTop: 50,
+    paddingVertical: 20,
+    backgroundColor: "white",
+  },
 });
+
 In DisplayModal.js
-import React from "react";
-import { View, Text, StyleSheet, Image, Modal } from "react-native";
+import { View, StyleSheet, Text, Image, Modal, Alert } from "react-native";
 export default function DisplayModal(props) {
-return (
-<Modal
-visible={props.display}
-animationType="slide"
-onResponderEnd={() => Alert.alert("closed")} >
-<View style={styles.container}>
-<Image source={props.image} style={styles.image} />
-<Text style={styles.text}>{props.data}</Text>
-</View>
-</Modal>
-);
+  return (
+    <Modal
+      visible={props.display}
+      animationType="slide"
+      onRequestClose={() => Alert.alert("closed")}
+    >
+      <View style={styles.container}>
+        <Image source={props.image} style={styles.image} />
+        <Text style={styles.text}>{props.data}</Text>
+      </View>
+    </Modal>
+  );
 }
 const styles = StyleSheet.create({
-container: {
-marginTop: 50,
-paddingVertical: 20,
-backgroundColor: "white",
-},
-image:{
-marginTop: 20,
-marginLeft:90,
-height: 200,
-width:200
-},
-text:{
-fontSize:20,
-marginLeft: 150
-}
+  container: {
+    marginTop: 50,
+    paddingVertical: 20,
+    backgroundColor: "white",
+  },
+  image: {
+    marginTop: 20,
+    marginLeft: 90,
+    height: 200,
+    width: 200,
+  },
+  text: {
+    fontSize: 20,
+    marginLeft: 150,
+  },
 });
 
-TouchableDemo.js
-Touchable component provide us with the capacity to capture the tapping functionality
+# Touchable component provides us with the capacity to capture the tapping functionality
 Components of Touchable:
 TouchableHighlight
 TouchableNativeFeedback
 TouchableOpacity
+In TouchableDemo.js
 import {
-View,
-StyleSheet,
-Alert,
-TouchableHighlight,
-Text,
-TouchableOpacity,
+  View,
+  StyleSheet,
+  Alert,
+  TouchableHighlight,
+  Text,
+  TouchableOpacity,
 } from "react-native";
 import { Component } from "react";
 export default class TouchableDemo extends Component {
-onPressButn() {
-Alert.alert("you tapped it");
-}
-onLongPressButn() {
-Alert.alert("you long pressed tapped it");
-}
-render() {
-return (
-<View style={styles.container}>
-<TouchableHighlight onPress={this.onPressButn} underlayColor="red">
-<View style={styles.button}>
-<Text>TouchableHighlight</Text>
-</View>
-</TouchableHighlight>
-<TouchableOpacity onPress={this.onPressButn} underlayColor="red">
-<View style={styles.button}>
-<Text>TouchableOpacity</Text>
-</View>
-</TouchableOpacity>
-<TouchableOpacity onLongPress={this.onPressButn} underlayColor="red">
-<View style={styles.button}>
-<Text>TouchableOpacityLongPress</Text>
-</View>
-</TouchableOpacity>
-</View>
-);
-}
+  onPressButn() {
+    Alert.alert("you tapped it");
+  }
+  onLongPressButn() {
+    Alert.alert("you long pressed tapped it");
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <TouchableHighlight onPress={this.onPressButn} underlayColor="red">
+          <View style={styles.button}>
+            <Text>TouchableHighlight</Text>
+          </View>
+        </TouchableHighlight>
+
+        <TouchableOpacity onPress={this.onPressButn} underlayColor="red">
+          <View style={styles.button}>
+            <Text>TouchableOpacity</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onLongPress={this.onLongPressButn}
+          underlayColor="red"
+        >
+          <View style={styles.button}>
+            <Text>TouchableOpacity</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-marginTop: 50,
-paddingVertical: 20,
-backgroundColor: "white",
-},
-button: {
-marginBottom: 30,
-width: 260,
-alignItems: "center",
-backgroundColor: "green",
-},
+  container: {
+    marginTop: 50,
+    paddingVertical: 20,
+    backgroundColor: "white",
+  },
+  button: {
+    marginBottom: 30,
+    width: 260,
+    alignItems: "center",
+    backgroundColor: "green",
+  },
 });
 
-ActivityIndicator.js
+# ActivityIndicator and Picker
+ActivityIndicator is like circle going and  going round till timeout or infinite time
+Picker is similar to dropdown in HTML
 In Terminal type, "npm install @react-native-picker/picker"
 React Native ActivityIndicator is a component for displaying loading action. It is the same as the circular loader/Progress Bar. It is used to show the progress of long-running task so that the user can understand something is in progress.
 React Native Picker is component which is used to select an item from the multiple choices. This is the same as a Dropdown option. Picker is used when we need to provide an alternative to choose from multiple options. It is used by importing the Picker component from the react-native library.
-import { View, StyleSheet, ActivityIndicator} from "react-native";
+In ActivityIndicatorDemo.js
+import { View, StyleSheet, Text, ActivityIndicator } from "react-native";
 import { Component } from "react";
-import {Picker} from '@react-native-picker/picker';
-export default class ActivityDemo extends Component {
-state={
-animating:true,
-choosenIndex:0
-}
-closeActivity=()=>setTimeout(() => this.setState({
-animating:false
-}),6000)
-componentDidMount=()=> this.closeActivity()
-render() {
-const animating=this.state.animating
-return (
-<View style={styles.container}>
-<ActivityIndicator animating={animating} size="large" color="red"/>
-<ActivityIndicator  size="small" color="blue"/>
-<ActivityIndicator  size="large" color="green"/>
-<Picker style={styles.textStyle}
-selectedValue={this.state.language}
-onValueChange={(itemValue,itemPosition) =>
-this.setState({language:itemValue,choosenIndex:itemPosition})>
-<Picker.item label="english" value="english"/>
-<Picker.item label="french" value="french"/>
-<Picker.item label="chinese" value="chinese"/>
-<Text>{"index " +this.state.choosenIndex}</Text>
-</Picker>
-</View>
-)
-}
-}
-const styles = StyleSheet.create({
-container: {
-marginTop: 50,
-paddingVertical: 20,
-backgroundColor: "white",
-},
-textStyle:{
-margin:24,
-fontSize:25,
-fontWeight:bold,
-textAlign:"center"
-},
-pickerStyle:{
-height:150,
-width: "80%",
-color:"green"
-}
-});
-
-MiniProject ToDoApp
-In MainApp.js
-import { StyleSheet, View, TextInput, Button, FlatList } from "react-native";
-import { useState } from "react";
-import TaskItem from "./TaskItem";
-import TaskInput from "./TaskInput";
-export default function MainApp() {
-const [showModal, setShowModal] = useState(false);
-const [myGoals, setMyGoals] = useState([]);
-function showModalValue() {
-setShowModal(true);
-}
-function endModalHandler() {
-setShowModal(false);
-}
-function addTaskHandler(enteredText) {
-setMyGoals((currentGoals) => [
-...currentGoals,
-{ text: enteredText, id: Math.random().toString() },
-]);
-endModalHandler();
-}
-function deleteTask(id) {
-//console.log('deleted');
-setMyGoals((currentGoals) => {
-return currentGoals.filter((goal) => goal.id !== id);
-});
-}
-return (
-<View style={styles.container}>
-<Button title="Add new Task" color="blue" onPress={showModalValue} />
-
-      {showModal && (
-        <TaskInput
-          visible={showModal}
-          onAddTask={addTaskHandler}
-          onCancel={endModalHandler}
-        />
-      )}
-      <View style={styles.taskContainer}>
-        <FlatList
-          data={myGoals}
-          renderItem={(itemdata) => {
-            return (
-              <TaskItem
-                text={itemdata.item.text}
-                id={itemdata.item.id}
-                od={deleteTask}
-              />
-            );
-          }}
-          alwaysBounceVertical={false}
-        ></FlatList>
+import { Picker } from "@react-native-picker/picker";
+export default class ActivityIndicatorDemo extends Component {
+  state = {
+    animating: true,
+    choosenIndex:0
+  };
+  closeActivity = () =>
+    setTimeout(() => {
+      this.setState({ animating: false });
+    }, 6000);
+  componentDidMount = () => this.closeActivity();
+  render() {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator animating={this.state.animating} size="large" color="red" />
+        <ActivityIndicator size="small" color="blue" />
+        <ActivityIndicator size="large" color="green" />
+        <Picker style={styles.textStyle}
+        selectedValue={this.state.language}
+        onValueChange={(itemValue,itemPosition) =>
+        this.setState({language:itemValue,choosenIndex:itemPosition})>
+            <Picker.item label="english" value="english"/>
+            <Picker.item label="french" value="french"/>
+            <Picker.item label="chinese" value="chinese"/>
+            <Text>{"index " +this.state.choosenIndex}</Text>
+        </Picker>       
       </View>
-    </View>
-
-);
+    );
+  }
 }
 const styles = StyleSheet.create({
-container: {
-padding: 50,
-paddingHorizontal: 16,
-},
-inputContainer: {
-flex: 1,
-flexDirection: "row",
-justifyContent: "space-between",
-alignItems: "center",
-paddingBottom: 24,
-borderBottomWidth: 1,
-borderBottomColor: "green",
-},
-textInput: {
-borderWidth: 1,
-borderColor: "darkpink",
-width: "70%",
-marginRight: 8,
-padding: 8,
-},
-taskContainer: {
-flex: 5,
-},
-taskItem: {
-margin: 8,
-padding: 8,
-borderRadius: 6,
-backgroundColor: "purple",
-},
-taskText: {
-color: "white",
-},
+  container: {
+    marginTop: 50,
+    paddingVertical: 20,
+    backgroundColor: "white",
+  },
+  textStyle: {
+    margin: 24,
+    fontSize: 25,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  pickerStyle: {
+    height: 150,
+    width: "80%",
+    color: "green",
+  },
 });
+
+# Now we will create a mini project called ToDoApp
+In the same "my-pro" app, create another directory named "todoapp" parallel to "components"
+Inside "todoapp" create a file called MainApp.js
+import { useState } from "react";
+import { Button, FlatList, ScrollView, StyleSheet, Text } from "react-native";
+import { TextInput, View } from "react-native";
+export default function MainApp() {
+  const [enteredText, setEnteredText] = useState("");
+  const [myGoals, setMyGoals] = useState([]);
+  function taskInputHandler(eT) {
+    setEnteredText(eT);
+  }
+  function addTaskHandler() {
+    setMyGoals((currentGoals) => [
+      ...currentGoals,
+      { text: enteredText, key: Math.random().toString() },
+    ]);
+  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Your Goal of the day"
+          onChangeText={taskInputHandler}
+        />
+        <Button title="Add Task" onPress={addTaskHandler} />
+      </View>
+      {/* <ScrollView alwaysBounceVertical={false} style={styles.taskContainer}>
+        {myGoals.map((goal) => (
+          <View style={styles.taskItem}>
+            <Text style={styles.taskText} key={goal}>
+              {goal}
+            </Text>
+          </View>
+        ))}
+      </ScrollView> */}
+      {/* FlatList is used for lazy loading. Load fresh data(like Meta notifications), only when we drag down it fetches new data.
+      It improves performance */}
+      <FlatList
+        data={myGoals}
+        renderItem={(itemdata) => {
+          return (
+            <View style={styles.taskItem}>
+              <Text style={styles.taskText}>{itemdata.item.text}</Text> //item is the default property of flatlist
+            </View>
+          );
+        }}
+        alwaysBounceVertical={false} //mostly it bounces in ios
+      ></FlatList>
+    </View>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    padding: 50,
+    paddingHorizontal: 16,
+  },
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "green",
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "darkpink",
+    width: "70%",
+    marginRight: 8,
+    padding: 8,
+  },
+  taskContainer: {
+    flex: 5,
+  },
+  taskItem: {
+    margin: 8,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: "purple",
+  },
+  taskText: {
+    color: "white",
+  },
+});
+
+Now we will split the MainApp.js into components as the class id becoming very large
 In TaskItem.js
 import React from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
@@ -1745,17 +1749,270 @@ marginHorizontal: 8,
 },
 });
 
-Meals App
-Training-Readme.md lowes-native lowes-react
-ssaha-5a0c1:react-training ssaha$ cd lowes-native/
-ssaha-5a0c1:lowes-native ssaha$ ls
-my-pro
-ssaha-5a0c1:lowes-native ssaha$ expo init meals-app
+# We will develop a navigation based app called Meals App(meals-app)
+Setup
+cd ..
+expo init meals-app
 
-after 3 classes
+Create "data","screens", "components" and "models" directory as given
+Create Category.js and Meal.js inside "models" directory
+Create CategoryGridTitle.js in "components" directory
+Create CategoryScreen.js in "screens" directory
+numColumns in FlatList is used to define the number of colums to display data
+
+In Meal.js
+class Meal {
+  constructor(
+    id,
+    categoryIds,
+    title,
+    affordability,
+    complexity,
+    imageUrl,
+    duration,
+    ingredients,
+    steps,
+    isGlutenFree,
+    isVegan,
+    isVegetarian,
+    isLactoseFree
+  ) {
+    this.id = id;
+    this.categoryIds = categoryIds;
+    this.title = title;
+    this.imageUrl = imageUrl;
+    this.ingredients = ingredients;
+    this.steps = steps;
+    this.duration = duration;
+    this.complexity = complexity;
+    this.affordability = affordability;
+    this.isGlutenFree = isGlutenFree;
+    this.isVegan = isVegan;
+    this.isVegetarian = isVegetarian;
+    this.isLactoseFree = isLactoseFree;
+  }
+}
+export default Meal;
+
+In Category.js
+class Category {
+  constructor(id, title, color) {
+    (this.id = id), (this.title = title), (this.color = color);
+  }
+}
+export default Category;
+
+Put dummy-data.js in data directory
+
+In CategoryScreen.js
+import { FlatList, View } from "react-native";
+import CategoryGridTitle from "../components/CategoryGridTitle";
+import { CATEGORIES } from "../data/dummy-data";
+function renderCategoryItem(itemdata) {
+    return (
+    <CategoryGridTitle
+    title={itemdata.item.title}
+    color={itemdata.item.color}
+    />
+    )
+  }
+function CategoryScreen(props) {
+  return (
+    <View>
+      <FlatList
+        data={CATEGORIES}
+        keyExtractor={(item) => item.id}
+        renderItem={renderCategoryItem}
+        numColumns={2}
+
+      />
+    </View>
+  );
+}
+export default CategoryScreen;
+
+In CategoryGridTitle.js
+import { Pressable, StyleSheet, Text, View } from "react-native";
+function CategoryGridTitle({ title, color }) {
+  return (
+    <View style={[styles.gridItem, { backgroundColor: color  }]}>
+      <Pressable android_ripple={{ color: "#ccc" }} style={styles.button}>
+        <View style={styles.innerContainer}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      </Pressable>
+    </View>
+  );
+}
+export default CategoryGridTitle;
+const styles = StyleSheet.create({
+  gridItem: {
+    flex: 1,
+    margin: 16,
+    height: 150,
+    borderRadius: 4,
+    elevation: 4,
+    shadowColor: "red",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  button: {
+    flex: 1,
+  },
+  innerContainer: {
+    flex: 1,
+    padding: 16,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
+
+For navigation install the below dependencies
 npm install @react-navigation/native
 expo install react-native-screens react-native-safe-area-context
 expo install @react-navigation/native-stack
+
+# The top one will always be the welcome screen. Navigation gives use backbutton as well.
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="MealsCategories" component={CategoryScreen} />
+          <Stack.Screen name="MealsOverview" component={MealsOverview} />
+        </Stack.Navigator>
+      </NavigationContainer>
+To make a default welcome screen, use "initialRouteName" in "Stack.Navigator"
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="MealsCategories">
+          <Stack.Screen name="MealsCategories" component={CategoryScreen} />
+          <Stack.Screen name="MealsOverview" component={MealsOverview} />
+        </Stack.Navigator>
+      </NavigationContainer>
+
+# Pass the data from one screen to another screen using Hooks navigation
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import {useNavigation} from '@react-navigation/native'
+function CategoryGridTitle({ title, color, onPress }) {
+  const navigation= useNavigation();
+  return (
+...
+
+import { FlatList, View } from "react-native";
+import CategoryGridTitle from "../components/CategoryGridTitle";
+import { CATEGORIES } from "../data/dummy-data";
+function CategoryScreen({ navigation }) {
+  function renderCategoryItem(itemdata) {
+    function pressHandler() {
+      navigation.navigate("MealsOverview", {
+        categoryId: itemdata.item.id,
+      });
+    }
+    return (
+...
+
+import { StyleSheet, Text, View } from "react-native";
+import { MEALS } from "../data/dummy-data";
+function MealsOverview({ route }) {
+  const catId = route.params.categoryId;
+  return (
+    <View style={styles.container}>
+      <Text>Meals OverView Screen - {catId}</Text>
+    </View>
+  );
+}
+export default MealsOverview;
+
+# Get the MealIds from CategoryId of a particular category
+In MealsOverview.js
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import MealItem from "../components/MealItem";
+import { MEALS } from "../data/dummy-data";
+function MealsOverview({ route }) {
+  const catId = route.params.categoryId;
+  const displayMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
+  function renderMealItem(itemData) {
+    return <MealItem title={itemData.item.title} />;
+  }
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={displayMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+      />
+    </View>
+  );
+}
+export default MealsOverview;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
+
+In MealItem.js
+import { StyleSheet, Text, View } from "react-native";
+function MealItem({ title }) {
+  return (
+    <View>
+      <Text>{title}</Text>
+    </View>
+  );
+}
+export default MealItem;
+
+# Display the image of each meal types
+In MealsOverview.js
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import MealItem from "../components/MealItem";
+import { MEALS } from "../data/dummy-data";
+function MealsOverview({ route }) {
+  const catId = route.params.categoryId;
+  const displayMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
+  function renderMealItem(itemData) {
+    return <MealItem 
+    title={itemData.item.title} 
+    imageUrl={itemData.item.imageUrl}
+    />;
+  }
+...
+
+In MealItem.js
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+function MealItem({ title, imageUrl }) {
+  return (
+    <View>
+      <Pressable>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <Text style={styles.title}>{title}</Text>
+      </Pressable>
+    </View>
+  );
+}
+export default MealItem;
+const styles = StyleSheet.create({
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
+
+
+
+
 
 Drawer
 npm i @react-navigation/drawer@6.3.1
