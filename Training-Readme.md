@@ -3,7 +3,7 @@
 
 ReactJS is a SPA library. Developed by Facebook. Used in Facebook,Instagram
 It is a Component centric library
-Its uses ES6.0 as its core language. It is advanced version of Es2015
+It uses ES6.0 as its core language. It is advanced version of Es2015
 Es2015 (vanilla Javascript) upgraded to ES6.0
 
 Biggest challenge of JS is it is browser incompatible
@@ -364,7 +364,7 @@ function AxiosDemo() {
 # Bootstrap.com
 It is a very popular tool for responsive web design web UI
 version= 3.4.1
-Add the below under public folder --> index.html --> inside <Head> sectiona add the below
+Add the below under public folder --> index.html --> inside <Head> section add the below
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
     integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu"
     crossorigin="anonymous">
@@ -2010,16 +2010,614 @@ const styles = StyleSheet.create({
   },
 });
 
+# Indivudual Design for a screen in App.js
+export default function App() {
+  const Stack = createNativeStackNavigator();
+  return (
+    <>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="MealsCategories">
+          <Stack.Screen
+            name="MealsCategories"
+            component={CategoryScreen}
+            options={{
+              title: "All Categories",
+              headerStyle: { backgroundColor: "#351401" },
+              headerTintColor: "white",
+            }}
+          />
+          <Stack.Screen name="MealsOverview" component={MealsOverview} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
 
+# Global Design for all screens in App.js
+export default function App() {
+  const Stack = createNativeStackNavigator();
+  return (
+    <>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="MealsCategories"
+          screenOptions={{
+            headerStyle: { backgroundColor: "#351401" },
+            headerTintColor: "white",
+          }}
+        >
+          <Stack.Screen
+            name="MealsCategories"
+            component={CategoryScreen}
+            options={{
+              title: "All Categories",
+            }}
+          />
+          <Stack.Screen name="MealsOverview" component={MealsOverview} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
 
+# Dynamic Navigations
+export default function App() {
+  const Stack = createNativeStackNavigator();
+  return (
+    <>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="MealsCategories"
+          screenOptions={{
+            headerStyle: { backgroundColor: "#351401" },
+            headerTintColor: "white",
+          }}
+        >
+          <Stack.Screen
+            name="MealsCategories"
+            component={CategoryScreen}
+            options={{
+              title: "All Categories",
+            }}
+          />
+          <Stack.Screen
+            name="MealsOverview"
+            component={MealsOverview}
+            options={({ route, navigation }) => {
+              const catId = route.params.categoryId;
+              return {
+                title: catId,
+              };
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
 
+or
+Comment options in App.js in "<Stack.Screen name="MealsOverview"..." and add the below in MealsOverview.js
+function MealsOverview({ route, navigation }) {
+  const catId = route.params.categoryId;
+  const displayMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
+  const categoryTitle = CATEGORIES.find(
+    (category) => category.id === catId
+  ).title;
+  navigation.setOptions({
+    title: categoryTitle,
+  });
+...
 
-Drawer
-npm i @react-navigation/drawer@6.3.1
-npm i react-native-reanimated@1.13.4 react-native-gesture-handler@2.1.0
+# We will use hooks here now for dynamic navigation
+function MealsOverview({ route, navigation }) {
+  const catId = route.params.categoryId;
+  const displayMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
+
+  useEffect(() => {
+    const categoryTitle = CATEGORIES.find(
+      (category) => category.id === catId
+    ).title;
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [catId, navigation]);
+
+# useLayoutEffect gets triggered synchronously after all dom has been manipulated
+import { useLayoutEffect } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import MealItem from "../components/MealItem";
+import { CATEGORIES, MEALS } from "../data/dummy-data";
+
+function MealsOverview({ route, navigation }) {
+  const catId = route.params.categoryId;
+  const displayMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
+
+  useLayoutEffect(() => {
+    const categoryTitle = CATEGORIES.find(
+      (category) => category.id === catId
+    ).title;
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [catId, navigation]);
+
+# Navigate to MealDetailsScreen.js
+In App.js
+<Stack.Screen name="MealDetail" component={MealDetailsScreen} />
+In MealItem.js
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+function MealItem({ title, imageUrl, duration, complexity, affordability }) {
+  const navigation = useNavigation();
+  function pressHandler() {
+    navigation.navigate("MealDetail");
+  }
+  return (
+    <View style={styles.mealItem}>
+      <Pressable onPress={pressHandler}>
+        <View>
+...
+
+# Add ingredients and steps in MealDetailsScreen.js
+In MealsOverview.js
+import { useLayoutEffect } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import MealItem from "../components/MealItem";
+import { CATEGORIES, MEALS } from "../data/dummy-data";
+function MealsOverview({ route, navigation }) {
+  const catId = route.params.categoryId;
+  const displayMeals = MEALS.filter((mealItem) => {
+    return mealItem.categoryIds.indexOf(catId) >= 0;
+  });
+  useLayoutEffect(() => {
+    const categoryTitle = CATEGORIES.find(
+      (category) => category.id === catId
+    ).title;
+    navigation.setOptions({
+      title: categoryTitle,
+    });
+  }, [catId, navigation]);
+  function renderMealItem(itemData) {
+    const item = itemData.item;
+    const mealItemProps = {
+      title: item.title,
+      imageUrl: item.imageUrl,
+      complexity: item.complexity,
+      affordability: item.affordability,
+      duration: item.duration,
+      id: item.id,
+    };
+    return <MealItem {...mealItemProps} />;
+  }
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={displayMeals}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMealItem}
+      />
+    </View>
+  );
+}
+export default MealsOverview;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+});
+
+In MealDetailsScreen.js
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import List from "../components/List";
+import MealDetails from "../components/MealDetails";
+import Subtitle from "../components/Subtitle";
+import { MEALS } from "../data/dummy-data";
+function MealDetailsScreen({ route }) {
+  const mealId = route.params.mealId;
+  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  return (
+    <ScrollView style={styles.container}>
+      <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />
+      <Text style={styles.title}>{selectedMeal.title}</Text>
+      <MealDetails
+        duration={selectedMeal.duration}
+        complexity={selectedMeal.complexity}
+        affordability={selectedMeal.affordability}
+        textStyle={styles.detailText}
+      />
+      <View style={styles.listOuterContainer}>
+        <View style={styles.listContainer}>
+          <Subtitle>Ingredients</Subtitle>
+          <List data={selectedMeal.ingredients} />
+
+          <Subtitle>Steps</Subtitle>
+          <List data={selectedMeal.steps} />
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+export default MealDetailsScreen;
+const styles = StyleSheet.create({
+  listOuterContainer: {
+    alignItems: "center",
+  },
+  listContainer: {
+    width: "80%",
+  },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  image: {
+    width: "100%",
+    height: 350,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 24,
+    margin: 8,
+    textAlign: "center",
+    color: "purple",
+  },
+  detailText: {
+    color: "blue",
+  },
+});
+
+In MealDetails.js
+import { StyleSheet, Text, View } from "react-native";
+function MealDetails({
+  duration,
+  complexity,
+  affordability,
+  style,
+  textStyle,
+}) {
+  return (
+    <View style={[styles.details, style]}>
+      <Text style={[styles.detailItem, textStyle]}>{duration}m</Text>
+      <Text style={[styles.detailItem, textStyle]}>
+        {complexity.toUpperCase()}
+      </Text>
+      <Text style={[styles.detailItem, textStyle]}>
+        {affordability.toUpperCase()}
+      </Text>
+    </View>
+  );
+}
+export default MealDetails;
+const styles = StyleSheet.create({
+  image: {
+    width: "100%",
+    height: 200,
+  },
+  details: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+  },
+  detailItem: {
+    marginHorizontal: 4,
+    fontSize: 12,
+  },
+});
+
+In Subtitle.js
+import { StyleSheet, Text, View } from "react-native";
+function Subtitle({ children }) {
+  return (
+    <View style={styles.subtitleContainer}>
+      <Text style={styles.subtitle}>{children}</Text>
+    </View>
+  );
+}
+export default Subtitle;
+const styles = StyleSheet.create({
+  subtitle: {
+    color: "red",
+    fontSize: 18,
+    fontWeight: "bold",
+    margin: 6,
+    textAlign: "center",
+  },
+  subtitleContainer: {
+    padding: 6,
+    margin: 4,
+    paddingHorizontal: 24,
+    marginVertical: 4,
+    borderBottomColor: "pink",
+    borderBottomWidth: 2,
+  },
+});
+
+In List.js
+import { StyleSheet, Text, View } from "react-native";
+function List({ data }) {
+  return data.map((datapoint) => (
+    <View key={datapoint} style={styles.listItem}>
+      <Text style={styles.itemtext}>{datapoint}</Text>
+    </View>
+  ));
+}
+export default List;
+const styles = StyleSheet.create({
+  listItem: {
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    marginVertical: 4,
+    marginHorizontal: 12,
+    backgroundColor: "gray",
+  },
+  itemtext: {
+    color: "purple",
+    textAlign: "center",
+  },
+});
+
+# Custom back button or star button
 npm i @expo/vector-icons
 
-Trip Manager
+In MealDetailsScreen.js
+import { useLayoutEffect } from "react";
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import IconButton from "../components/IconButton";
+import List from "../components/List";
+import MealDetails from "../components/MealDetails";
+import Subtitle from "../components/Subtitle";
+import { MEALS } from "../data/dummy-data";
+function MealDetailsScreen({ route, navigation }) {
+  const mealId = route.params.mealId;
+  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  function callme() {
+    console.log("pressed");
+  }
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <IconButton onPress={callme} />;
+      },
+    });
+  });
+  return (
+    <ScrollView style={styles.container}>
+...
+
+In IconButton.js
+import { Pressable, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+function IconButton({ onPress }) {
+  return (
+    <Pressable onPress={onPress}>
+      <Ionicons name="star" size={24} color="white" />
+    </Pressable>
+  );
+}
+export default IconButton;
+
+# Types of navigation
+Stack
+Bottom tab
+Drawer
+
+# Drawer Navigation
+npm i @react-navigation/drawer@6.3.1 --> for drawer navigator
+npm i react-native-reanimated@1.13.4 react-native-gesture-handler@2.1.0 --> for navigator it is mandatory
+npm i @expo/vector-icons --> for icons
+
+In App.js
+import { Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import UserScreen from "./screens/UserScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import { Ionicons } from "@expo/vector-icons";
+const Drawer = createDrawerNavigator();
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Drawer.Navigator
+        initialRouteName="User"
+        screenOptions={{
+          headerStyle: { backgroundColor: "purple" },
+          headerTintColor: "white",
+          drawerActiveBackgroundColor: "pink",
+        }}
+      >
+        <Drawer.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{
+            drawerLabel: "Welcome Screen",
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Drawer.Screen
+          name="User"
+          component={UserScreen}
+          options={{
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="person" color={color} size={size} />
+            ),
+          }}
+        />
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
+}
+
+In UserScreen.js
+import { View, Text, Button, StyleSheet } from "react-native";
+function UserScreen({ navigation }) {
+  function openDrawer() {
+    navigation.toggleDrawer();
+  }
+  return (
+    <View style={styles.rootContainer}>
+      <Text>
+        This is the <Text style={styles.highlight}>"User"</Text> screen!
+      </Text>
+      <Button title="Open Drawer" onPress={openDrawer} />
+    </View>
+  );
+}
+export default UserScreen;
+const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  highlight: {
+    fontWeight: "bold",
+    color: "#eb1064",
+  },
+});
+
+In WelcomeScreen.js
+import { View, Text, StyleSheet } from "react-native";
+function WelcomeScreen() {
+  return (
+    <View style={styles.rootContainer}>
+      <Text>
+        This is the <Text style={styles.highlight}>"Welcome"</Text> screen!
+      </Text>
+    </View>
+  );
+}
+export default WelcomeScreen;
+const styles = StyleSheet.create({
+  rootContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  highlight: {
+    fontWeight: "bold",
+    color: "#eb1064",
+  },
+});
+
+# Bottom tab Navigation
+npm install @react-navigation/bottom-tabs
+
+In App.js
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import UserScreen from "./screens/UserScreen";
+import WelcomeScreen from "./screens/WelcomeScreen";
+import { Ionicons } from "@expo/vector-icons";
+const BottomTab = createBottomTabNavigator();
+export default function App() {
+  return (
+    <NavigationContainer>
+      <BottomTab.Navigator
+        initialRouteName="User"
+        screenOptions={{
+          headerStyle: { backgroundColor: "purple" },
+          headerTintColor: "white",
+          tabBarActiveTintColor: "pink",
+        }}
+      >
+        <BottomTab.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <BottomTab.Screen
+          name="User"
+          component={UserScreen}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person" color={color} size={size} />
+            ),
+          }}
+        />
+      </BottomTab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+# Now we implememt navigation in "meals-app" project
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import CategoryScreen from "./screens/CategoryScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import MealsOverview from "./screens/MealsOverview";
+import MealDetailsScreen from "./screens/MealDetailsScreen";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+export default function App() {
+  const Stack = createNativeStackNavigator();
+  const Drawer = createDrawerNavigator();
+  function DrawerNavigator(){ // nested navigation
+    return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="Categories" component={CategoryScreen}></Drawer.Screen>
+    </Drawer.Navigator>
+    )
+  }
+  return (
+    <>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="MealsCategories"
+          screenOptions={{
+            headerStyle: { backgroundColor: "#351401" },
+            headerTintColor: "white",
+          }}
+        >
+          <Stack.Screen
+            name="Drawer"
+            component={DrawerNavigator}
+            options={{
+              title: "All Categories",
+            }}
+          />
+          <Stack.Screen name="MealsOverview" component={MealsOverview} />
+          <Stack.Screen name="MealDetail" component={MealDetailsScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  );
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+
+# Trip Manager
 expo init app-name-directory
 cd app-name-directory
 npm start
@@ -2028,6 +2626,11 @@ expo install react-native-screens react-native-safe-area-context
 expo install @react-navigation/native-stack
 npm install react-redux
 npm i @reduxjs/toolkit
+
+# For laptop expo web
 npx expo install react-native-web@~0.18.7 react-dom@18.0.0 @expo/webpack-config@^0.17.0
 install "react-dom": "^18.2.0" as well
 npm start and press w
+
+# For any project without "node-modules" directory, type "npm i" to install the dependencies from "package.json"
+Then type "npm start" to start the application
