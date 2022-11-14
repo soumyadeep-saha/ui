@@ -1,0 +1,46 @@
+{
+  "status": "ok",
+  "totalResults": 4,
+  "articles": [
+    {
+      "source": { "id": "news24", "name": "News24" },
+      "author": "Khanyiso Tshwaku",
+      "title": "Cricket SA's chief Moseki says Proteas will have interim coach for key Australia tour",
+      "description": "Cricket South Africa's chief executive officer Pholetsi Moseki said the Proteas will have an interim coach for December's Test tour of Australia.",
+      "url": "https://www.news24.com/sport/Cricket/Proteas/cricket-sas-chief-moseki-says-proteas-will-have-interim-coach-for-key-australia-tour-20221020",
+      "urlToImage": "https://cdn.24.co.za/files/Cms/General/d/3664/129cbdfb12584d179f227640740a1404.jpg",
+      "publishedAt": "2022-10-20T07:11:41+00:00",
+      "content": "<ul><li>Cricket South Africa's chief executive officer Poletsi Moseki said an interim coach would be in charge for the December/January Test series against Australia.</li><li>The Proteas will be with… [+2151 chars]"
+    },
+    {
+      "source": { "id": "google-news-in", "name": "Google News (India)" },
+      "author": null,
+      "title": "Sharad Pawar On Stage, Eknath Shinde Says \"Sleepless Nights For Some\"",
+      "description": "Maharashtra Chief Minister Eknath Shinde, his deputy Devendra Fadnavis and BJP leader Ashish Shelar on Wednesday shared the dais with NCP chief Sharad Pawar at a special dinner held on the eve of the Mumbai Cricket Association (MCA) polls.",
+      "url": "https://www.ndtv.com/india-news/sharing-stage-with-sharad-pawar-eknath-shindes-sleepless-nights-jibe-3447105",
+      "urlToImage": "https://c.ndtvimg.com/2022-10/ps4uvib8_shinde-pawar-650_625x300_19_October_22.jpg",
+      "publishedAt": "2022-10-20T01:53:00+00:00",
+      "content": "Sharad Pawar, Eknath Shinde and Devendra Fadnavis at the Mumbai event\r\nMumbai: Maharashtra Chief Minister Eknath Shinde, his deputy Devendra Fadnavis and BJP leader Ashish Shelar on Wednesday shared … [+1800 chars]"
+    },
+    {
+      "source": { "id": "espn-cric-info", "name": "ESPN Cric Info" },
+      "author": null,
+      "title": "PCB hands Umar Akmal three-year ban from all cricket | ESPNcricinfo.com",
+      "description": "Penalty after the batsman pleaded guilty to not reporting corrupt approaches | ESPNcricinfo.com",
+      "url": "http://www.espncricinfo.com/story/_/id/29103103/pcb-hands-umar-akmal-three-year-ban-all-cricket",
+      "urlToImage": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1099495_800x450.jpg",
+      "publishedAt": "2020-04-27T11:41:47Z",
+      "content": "Umar Akmal's troubled cricket career has hit its biggest roadblock yet, with the PCB handing him a ban from all representative cricket for three years after he pleaded guilty of failing to report det… [+1506 chars]"
+    },
+    {
+      "source": { "id": "espn-cric-info", "name": "ESPN Cric Info" },
+      "author": null,
+      "title": "What we learned from watching the 1992 World Cup final in full again | ESPNcricinfo.com",
+      "description": "Wides, lbw calls, swing - plenty of things were different in white-ball cricket back then | ESPNcricinfo.com",
+      "url": "http://www.espncricinfo.com/story/_/id/28970907/learned-watching-1992-world-cup-final-full-again",
+      "urlToImage": "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1219926_1296x729.jpg",
+      "publishedAt": "2020-03-30T15:26:05Z",
+      "content": "Last week, we at ESPNcricinfo did something we have been thinking of doing for eight years now: pretend-live ball-by-ball commentary for a classic cricket match. We knew the result, yes, but we tried… [+6823 chars]"
+    }
+  ]
+}
